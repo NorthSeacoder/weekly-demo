@@ -1,0 +1,25 @@
+---
+import { getWeeklyPosts } from '~/utils/mock-data'
+import StatCard from '~/components/ui/StatCard.astro'
+
+const weeklyList = await getWeeklyPosts()
+
+---
+
+<section class="py-12  dark:bg-dark">
+    <div class="container mx-auto px-4">
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {weeklyList.map((weekly) => (
+                <li>
+                    <a href={`/weekly/${weekly.slug}`} class="block">
+                        <StatCard
+                            title={weekly.title}
+                            date={weekly.date}
+                            tags={weekly.tags}
+                        />
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</section> 

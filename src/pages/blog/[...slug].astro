@@ -1,0 +1,31 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import Blog from '~/components/pages/Blog.astro';
+import type { GetStaticPaths } from 'astro';
+import { getBlogPosts, getBlogPost } from '~/utils/mock-data';
+
+export const getStaticPaths = (async () => {
+  const blogs = await getBlogPosts();
+  return blogs.map(blog => ({
+    params: { slug: blog.slug },
+    props: { post: blog }
+  }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const metadata = {
+    title: post.title,
+    description: post.title,
+    openGraph: {
+        type: 'article',
+        article: {
+            publishedTime: post.date,
+            tags: post.tags
+        }
+    }
+};
+---
+
+<Layout metadata={metadata}>
+  <Blog post={post} />
+</Layout>

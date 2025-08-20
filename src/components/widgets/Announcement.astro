@@ -1,0 +1,26 @@
+---
+import { getLatestWeeklyPosts } from '~/utils/mock-data'
+
+const latestWeeklyList = await getLatestWeeklyPosts(1)
+const latestWeekly = latestWeeklyList[0]
+---
+
+<div
+  class="text-muted text-sm dark:bg-dark dark:border-b dark:border-gray-50/0 dark:text-gray-400 hidden md:flex gap-1 overflow-hidden px-3 py-2 relative text-ellipsis whitespace-nowrap"
+>
+  <span
+    class="dark:bg-gray-700 bg-white/40 dark:text-gray-300 font-semibold px-1 py-0.5 text-xs mr-0.5 rtl:mr-0 rtl:ml-0.5 inline-block"
+    >NEW</span
+  >
+  <a href={`/weekly/${latestWeekly.slug}`} class="text-muted hover:underline dark:text-gray-400 font-medium"
+    >{latestWeekly.title} »</a
+  >
+  <a
+    target="_blank"
+    rel="noopener"
+    class="ltr:ml-auto rtl:mr-auto w-[4.4rem] h-[1.2rem] ml-auto bg-contain inline-block bg-[url(https://img.shields.io/github/stars/NorthSeacoder/weekly.svg?style=social&label=Stars&maxAge=86400)]"
+    title="If you like this site, give me a star."
+    href="https://github.com/NorthSeacoder/weekly"
+  >
+  </a>
+</div>

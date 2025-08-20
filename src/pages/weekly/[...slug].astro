@@ -1,0 +1,31 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import SinglePost from '~/components/pages/SinglePost.astro';
+import type { GetStaticPaths } from 'astro';
+import { getWeeklyPosts } from '~/utils/mock-data';
+
+export const getStaticPaths = (async () => {
+  const weeklies = await getWeeklyPosts();
+  
+  // 为每个文章添加前一篇和后一篇的引用
+  return weeklies.map((weekly, index) => {
+    const prevPost = index > 0 ? weeklies[index - 1] : undefined;
+    const nextPost = index < weeklies.length - 1 ? weeklies[index + 1] : undefined;
+    
+    return {
+      params: { slug: weekly.slug },
+      props: {
+        post: weekly,
+        prevPost,
+        nextPost,
+      },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { post, prevPost, nextPost } = Astro.props;
+---
+
+<Layout>
+  <SinglePost post={post} prevPost={prevPost} nextPost={nextPost} />
+</Layout>

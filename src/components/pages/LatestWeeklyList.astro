@@ -1,0 +1,32 @@
+---
+import { getLatestWeeklyPosts } from '~/utils/mock-data'
+import StatCard from '~/components/ui/StatCard.astro'
+import Button from '~/components/ui/Button.astro'
+import StarBorder from '~/components/ui/StarBorder.astro'
+
+const latestWeeklyList = await getLatestWeeklyPosts(12);
+---
+
+<section class="py-6 lg:py-8 dark:bg-dark">
+    <div class="container mx-auto px-4">
+        <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6">最新周刊</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {latestWeeklyList.map((weekly) => (
+                <li>
+                    <a href={`/weekly/${weekly.slug}`} class="block">
+                        <StatCard
+                            title={weekly.title}
+                            date={weekly.date}
+                            tags={weekly.tags}
+                        />
+                    </a>
+                </li>
+            ))}
+        </ul>
+        <div class="mt-4 lg:mt-6 text-center">
+            <Button href="/weekly">
+                更多内容
+            </Button>
+        </div>
+    </div>
+</section> 

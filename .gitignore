@@ -1,0 +1,32 @@
+node_modules
+log
+logs
+
+# macOS Finder attribute files
+.DS_Store
+
+# output of business build
+build
+dist
+local.js
+
+# Don't track NPM lockfile (we use Yarn)
+package-lock.json
+yarn-error.log
+
+# IDE
+.idea
+.vscode
+.vim
+
+# local env
+*.local
+
+# i18n
+source.json
+
+# 测试相关文件
+coverage/
+.vitest/
+
+.astro
