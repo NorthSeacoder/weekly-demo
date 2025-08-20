@@ -1,25 +1,131 @@
 ---
 import { getWeeklyPosts } from '~/utils/mock-data'
 import StatCard from '~/components/ui/StatCard.astro'
+import { cn } from '~/utils/utils'
 
 const weeklyList = await getWeeklyPosts()
-
 ---
 
-<section class="py-12  dark:bg-dark">
-    <div class="container mx-auto px-4">
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {weeklyList.map((weekly) => (
-                <li>
-                    <a href={`/weekly/${weekly.slug}`} class="block">
+<section class="py-12 lg:py-16 bg-gradient-to-b from-gray-50/30 to-white dark:from-gray-900/30 dark:to-gray-900 min-h-screen">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 页面标题 -->
+        <div class="text-center mb-12 lg:mb-16">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50/80 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 text-sm font-medium mb-6 border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm">
+                <div class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></div>
+                全部内容
+            </div>
+            <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-heading">
+                周刊归档
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                探索我们精心整理的技术周刊合集，每一期都是前端技术世界的精华摘要
+            </p>
+            <div class="mt-6 text-sm text-gray-500 dark:text-gray-400">
+                共 {weeklyList.length} 期周刊
+            </div>
+        </div>
+
+        <!-- 周刊网格 -->
+        <div class={cn(
+            "grid gap-6 lg:gap-8",
+            "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+            "max-w-7xl mx-auto"
+        )}>
+            {weeklyList.map((weekly, index) => (
+                <div 
+                    class="animate-fade-in-up" 
+                    style={`animation-delay: ${Math.min(index * 0.05, 1)}s;`}
+                >
+                    <a href={`/weekly/${weekly.slug}`} class="block h-full">
                         <StatCard
                             title={weekly.title}
                             date={weekly.date}
                             tags={weekly.tags}
                         />
                     </a>
-                </li>
+                </div>
             ))}
-        </ul>
+        </div>
+
+        <!-- 底部装饰 -->
+        <div class="mt-16 lg:mt-20 text-center">
+            <div class="inline-flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                <div class="w-12 h-px bg-gradient-to-r from-transparent to-gray-300 dark:to-gray-600 mr-4"></div>
+                持续更新中
+                <div class="w-12 h-px bg-gradient-to-l from-transparent to-gray-300 dark:to-gray-600 ml-4"></div>
+            </div>
+        </div>
     </div>
-</section> 
+</section>
+
+<style>
+    /* 动画定义 */
+    @keyframes fade-in-up {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in-up {
+        animation: fade-in-up 0.8s ease-out both;
+    }
+
+    /* 网格布局优化 */
+    .grid {
+        display: grid;
+        align-items: stretch;
+    }
+
+    /* 确保卡片高度一致 */
+    .grid > div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .grid > div > a {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 响应式优化 */
+    @media (max-width: 640px) {
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 768px) {
+        .grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (min-width: 1536px) {
+        .grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* 减少动画 */
+    @media (prefers-reduced-motion: reduce) {
+        .animate-fade-in-up {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /* 性能优化 */
+    .grid > div {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+    }
+</style>

@@ -2,31 +2,123 @@
 import { getLatestWeeklyPosts } from '~/utils/mock-data'
 import StatCard from '~/components/ui/StatCard.astro'
 import Button from '~/components/ui/Button.astro'
-import StarBorder from '~/components/ui/StarBorder.astro'
+import { cn } from '~/utils/utils'
 
 const latestWeeklyList = await getLatestWeeklyPosts(12);
 ---
 
-<section class="py-6 lg:py-8 dark:bg-dark">
-    <div class="container mx-auto px-4">
-        <h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 lg:mb-6">最新周刊</h2>
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {latestWeeklyList.map((weekly) => (
-                <li>
-                    <a href={`/weekly/${weekly.slug}`} class="block">
+<section class="py-16 lg:py-20 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-900/50 dark:to-gray-900">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- 标题区域 -->
+        <div class="text-center mb-12 lg:mb-16">
+            <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-50/80 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 text-sm font-medium mb-4 border border-blue-200/50 dark:border-blue-800/50 backdrop-blur-sm">
+                <div class="w-2 h-2 bg-blue-500 rounded-full mr-2 animate-pulse"></div>
+                最新内容
+            </div>
+            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4 font-heading">
+                精选周刊
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                每周精心筛选的前端技术内容，助你保持技术敏锐度
+            </p>
+        </div>
+
+        <!-- 卡片网格 -->
+        <div class={cn(
+            "grid gap-6 lg:gap-8",
+            "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+            "mb-12 lg:mb-16"
+        )}>
+            {latestWeeklyList.map((weekly, index) => (
+                <div 
+                    class="animate-fade-in-up" 
+                    style={`animation-delay: ${index * 0.1}s;`}
+                >
+                    <a href={`/weekly/${weekly.slug}`} class="block h-full">
                         <StatCard
                             title={weekly.title}
                             date={weekly.date}
                             tags={weekly.tags}
                         />
                     </a>
-                </li>
+                </div>
             ))}
-        </ul>
-        <div class="mt-4 lg:mt-6 text-center">
-            <Button href="/weekly">
-                更多内容
+        </div>
+
+        <!-- 查看更多按钮 -->
+        <div class="text-center">
+            <Button 
+                href="/weekly"
+                variant="secondary"
+                size="lg"
+                class="px-8 py-4 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+            >
+                查看全部周刊
+                <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
             </Button>
         </div>
     </div>
-</section> 
+</section>
+
+<style>
+    /* 动画定义 */
+    @keyframes fade-in-up {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in-up {
+        animation: fade-in-up 0.8s ease-out both;
+    }
+
+    /* 网格布局优化 */
+    .grid {
+        display: grid;
+        align-items: stretch;
+    }
+
+    /* 确保卡片高度一致 */
+    .grid > div {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .grid > div > a {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* 响应式优化 */
+    @media (max-width: 768px) {
+        .grid {
+            gap: 1.5rem;
+        }
+    }
+
+    /* 减少动画 */
+    @media (prefers-reduced-motion: reduce) {
+        .animate-fade-in-up {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
+
+    /* 触摸设备优化 */
+    @media (hover: none) {
+        .hover\:scale-105:hover,
+        .hover\:-translate-y-1:hover {
+            transform: none;
+        }
+    }
+</style>
