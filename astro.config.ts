@@ -1,4 +1,5 @@
 import {defineConfig} from 'astro/config';
+import { fileURLToPath } from 'node:url';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import tailwind from '@astrojs/tailwind';
@@ -22,6 +23,12 @@ export default defineConfig({
     vite: {
         define: {
             'import.meta.env.BUILD_TIME': JSON.stringify(new Date().toISOString())
+        },
+        resolve: {
+            alias: {
+                '~': fileURLToPath(new URL('./src', import.meta.url)),
+                '@': fileURLToPath(new URL('./', import.meta.url))
+            }
         }
     }
 });
