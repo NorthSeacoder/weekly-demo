@@ -23,81 +23,103 @@ const isNew = dayjs(date).isAfter(dayjs().subtract(2, 'week'));
 
 const cardClasses = cn(
     'group relative overflow-hidden h-full',
-    'p-5 lg:p-6 rounded-2xl transition-all duration-500 ease-out',
-    'bg-white/80 dark:bg-gray-900/80',
+    'p-6 lg:p-8 rounded-2xl transition-all duration-700 ease-out',
+    'bg-white/90 dark:bg-gray-900/90',
     'backdrop-blur-xl backdrop-saturate-150',
-    'border border-gray-200/40 dark:border-gray-700/30',
-    'hover:border-gray-300/60 dark:hover:border-gray-600/50',
-    'hover:shadow-lg hover:shadow-gray-500/10 dark:hover:shadow-black/20',
-    'hover:-translate-y-1 hover:scale-[1.005]',
+    'border border-gray-200/50 dark:border-gray-700/40',
+    'hover:border-blue-300/60 dark:hover:border-blue-600/50',
+    'hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-blue-500/20',
+    'hover:-translate-y-2 hover:scale-[1.02]',
     'cursor-pointer transform-gpu',
     'before:absolute before:inset-0 before:rounded-2xl before:pointer-events-none',
-    'before:bg-gradient-to-br before:from-gray-50/50 before:via-transparent before:to-gray-100/30',
-    'dark:before:from-gray-800/30 dark:before:via-transparent dark:before:to-gray-700/20',
+    'before:bg-gradient-to-br before:from-blue-50/30 before:via-purple-50/20 before:to-pink-50/30',
+    'dark:before:from-blue-950/20 dark:before:via-purple-950/10 dark:before:to-pink-950/20',
     'before:opacity-0 before:transition-all before:duration-700',
-    'hover:before:opacity-70',
-    'focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:ring-offset-2'
+    'hover:before:opacity-100',
+    'focus-within:ring-2 focus-within:ring-blue-500/30 focus-within:ring-offset-2'
 );
 ---
 
 <div class={cardClasses}>
-    <!-- 顶部装饰条 - 更细腻的设计 -->
-    <div class="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500/60 via-purple-500/60 to-blue-500/60 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-t-2xl scale-x-0 group-hover:scale-x-100 transform origin-center"></div>
+    <!-- 顶部装饰条 - 现代化设计 -->
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500/60 via-purple-500/60 to-pink-500/60 opacity-0 group-hover:opacity-100 transition-all duration-700 rounded-t-2xl scale-x-0 group-hover:scale-x-100 transform origin-center"></div>
+    
+    <!-- 角落装饰元素 -->
+    <div class="absolute top-4 right-4 w-2 h-2 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+    <div class="absolute bottom-4 left-4 w-1 h-1 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
     
     <!-- New Badge - 重新设计 -->
     {isNew && (
         <div class="absolute -top-2 -right-2 z-20">
-            <div class="relative w-3 h-3 bg-emerald-400 rounded-full border-2 border-white dark:border-gray-900 shadow-md"></div>
+            <div class="relative">
+                <!-- 主要标识 -->
+                <div class="w-4 h-4 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full border-2 border-white dark:border-gray-900 shadow-lg animate-pulse"></div>
+                <!-- 光晕效果 -->
+                <div class="absolute inset-0 w-4 h-4 bg-emerald-400 rounded-full blur-sm opacity-50 animate-ping"></div>
+                <!-- 工具提示 -->
+                <div class="absolute -bottom-8 -left-6 px-2 py-1 bg-emerald-500 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap">
+                    最新发布
+                </div>
+            </div>
         </div>
     )}
 
     <!-- 内容区域 -->
     <div class="relative z-10 h-full flex flex-col">
         <!-- 主标题 -->
-        <h3 class="text-lg lg:text-xl font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300 font-heading leading-tight">
+        <h3 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-500 font-heading leading-tight tracking-tight">
             {title}
         </h3>
         
         <!-- 描述 -->
         {desc && (
-            <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2 text-sm leading-relaxed flex-grow">
+            <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3 text-base leading-relaxed flex-grow opacity-90 group-hover:opacity-100 transition-opacity duration-300">
                 {desc}
             </p>
         )}
         
         <!-- 底部信息区域 -->
-        <div class="mt-auto space-y-3">
+        <div class="mt-auto space-y-4">
             <!-- 标签 -->
             {tags.length > 0 && (
-                <div class="flex flex-wrap gap-1.5">
-                    <Tags tags={tags} maxVisible={3} variant="minimal" size="sm" compact />
+                <div class="flex flex-wrap gap-2">
+                    <Tags tags={tags} maxVisible={4} variant="modern" size="sm" compact />
                 </div>
             )}
             
             <!-- 日期和装饰 -->
-            <div class="flex items-center justify-between pt-3 border-t border-gray-200/50 dark:border-gray-700/30">
-                <div class="flex items-center text-gray-500 dark:text-gray-400 text-xs">
-                    <div class="w-3 h-3 mr-2 rounded-full bg-gray-300 dark:bg-gray-600 opacity-60"></div>
-                    <time datetime={date.toString()} class="font-medium">{formattedDate}</time>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
+                <div class="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                    <!-- 日期图标 -->
+                    <div class="w-4 h-4 mr-3 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-600 dark:to-gray-500 opacity-60 flex items-center justify-center">
+                        <div class="w-1.5 h-1.5 bg-white dark:bg-gray-300 rounded-full"></div>
+                    </div>
+                    <time datetime={date.toString()} class="font-medium tracking-wide">{formattedDate}</time>
                 </div>
                 
-                <!-- 装饰性箭头 -->
-                <div class="flex items-center text-gray-400 group-hover:text-blue-500 dark:text-gray-500 dark:group-hover:text-blue-400 transition-all duration-300 transform group-hover:translate-x-1">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                <!-- 装饰性箭头 - 现代化设计 -->
+                <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100/80 dark:bg-gray-800/60 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-all duration-300 transform group-hover:translate-x-1 group-hover:scale-110">
+                    <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-500 dark:text-gray-500 dark:group-hover:text-blue-400 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 微光效果 -->
-    <div class="absolute inset-0 opacity-0 group-hover:opacity-70 transition-opacity duration-1000 pointer-events-none overflow-hidden rounded-2xl">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
+    <!-- 高级微光效果 -->
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none overflow-hidden rounded-2xl">
+        <!-- 主微光 -->
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/15 to-transparent dark:via-white/8 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
+        <!-- 次微光 -->
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-blue-400/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1400 ease-out" style="animation-delay: 0.2s;"></div>
     </div>
 
     <!-- 底部装饰渐变 -->
-    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-300/40 dark:via-gray-600/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-300/40 dark:via-blue-600/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+    
+    <!-- 边框光晕效果 -->
+    <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl -z-10"></div>
 </div>
 
 <style>
@@ -116,6 +138,13 @@ const cardClasses = cn(
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 
     /* 动画性能优化 */
     .transform-gpu {
@@ -127,12 +156,16 @@ const cardClasses = cn(
     /* 响应式调整 */
     @media (max-width: 640px) {
         .group {
-            padding: 1.25rem;
+            padding: 1.5rem;
         }
         
         h3 {
-            font-size: 1rem;
+            font-size: 1.125rem;
             line-height: 1.4;
+        }
+        
+        .line-clamp-3 {
+            -webkit-line-clamp: 2;
         }
     }
 
@@ -142,7 +175,9 @@ const cardClasses = cn(
             transition: none !important;
         }
         
-        .group * {
+        .group *,
+        .group::before,
+        .group::after {
             animation: none !important;
             transition: none !important;
         }
@@ -153,12 +188,64 @@ const cardClasses = cn(
         .group:hover {
             transform: none;
         }
+        
+        .group:hover::before {
+            opacity: 0.3;
+        }
     }
 
     /* 高对比度模式 */
     @media (prefers-contrast: high) {
         .group {
             border-width: 2px;
+            background: hsl(var(--card));
+            color: hsl(var(--card-foreground));
         }
+        
+        .group::before {
+            display: none;
+        }
+    }
+    
+    /* 暗色模式特殊处理 */
+    .dark .group {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .dark .group:hover {
+        box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+    }
+    
+    /* 性能优化 */
+    .group,
+    .group::before,
+    .group::after {
+        will-change: transform, opacity;
+    }
+    
+    /* 焦点状态增强 */
+    .group:focus-within {
+        outline: none;
+        transform: translateY(-1px) scale(1.01);
+    }
+    
+    /* 加载状态 */
+    .group[data-loading="true"] {
+        pointer-events: none;
+        opacity: 0.7;
+    }
+    
+    .group[data-loading="true"]::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        animation: shimmer 1.5s linear infinite;
+        border-radius: inherit;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
 </style>
