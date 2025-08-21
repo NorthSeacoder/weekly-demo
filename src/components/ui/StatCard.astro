@@ -23,19 +23,19 @@ const isNew = dayjs(date).isAfter(dayjs().subtract(2, 'week'));
 
 const cardClasses = cn(
     'group relative overflow-hidden h-full',
-    'p-6 lg:p-7 rounded-2xl transition-all duration-500 ease-out',
+    'p-5 lg:p-6 rounded-2xl transition-all duration-500 ease-out',
     'bg-white/80 dark:bg-gray-900/80',
     'backdrop-blur-xl backdrop-saturate-150',
     'border border-gray-200/40 dark:border-gray-700/30',
     'hover:border-gray-300/60 dark:hover:border-gray-600/50',
-    'hover:shadow-xl hover:shadow-gray-500/10 dark:hover:shadow-black/20',
-    'hover:-translate-y-2 hover:scale-[1.01]',
+    'hover:shadow-lg hover:shadow-gray-500/10 dark:hover:shadow-black/20',
+    'hover:-translate-y-1 hover:scale-[1.005]',
     'cursor-pointer transform-gpu',
     'before:absolute before:inset-0 before:rounded-2xl before:pointer-events-none',
     'before:bg-gradient-to-br before:from-gray-50/50 before:via-transparent before:to-gray-100/30',
     'dark:before:from-gray-800/30 dark:before:via-transparent dark:before:to-gray-700/20',
     'before:opacity-0 before:transition-all before:duration-700',
-    'hover:before:opacity-100',
+    'hover:before:opacity-70',
     'focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:ring-offset-2'
 );
 ---
@@ -47,14 +47,7 @@ const cardClasses = cn(
     <!-- New Badge - 重新设计 -->
     {isNew && (
         <div class="absolute -top-2 -right-2 z-20">
-            <div class="relative">
-                <!-- 外层光晕 -->
-                <div class="absolute inset-0 bg-emerald-400/30 rounded-full blur-lg animate-pulse"></div>
-                <!-- 核心指示器 -->
-                <div class="relative w-4 h-4 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full border-2 border-white dark:border-gray-900 shadow-lg">
-                    <div class="absolute inset-0.5 bg-emerald-200/60 rounded-full animate-ping opacity-75"></div>
-                </div>
-            </div>
+            <div class="relative w-3 h-3 bg-emerald-400 rounded-full border-2 border-white dark:border-gray-900 shadow-md"></div>
         </div>
     )}
 
@@ -99,7 +92,7 @@ const cardClasses = cn(
     </div>
 
     <!-- 微光效果 -->
-    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none overflow-hidden rounded-2xl">
+    <div class="absolute inset-0 opacity-0 group-hover:opacity-70 transition-opacity duration-1000 pointer-events-none overflow-hidden rounded-2xl">
         <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent dark:via-white/10 -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1200 ease-out"></div>
     </div>
 
