@@ -45,21 +45,4 @@ const metadata = {
     </section>
 </Layout>
 
-<style>
-  @keyframes auroraMove {
-    0% { transform: translate3d(0,0,0) rotate(0deg); }
-    50% { transform: translate3d(20px,-10px,0) rotate(10deg); }
-    100% { transform: translate3d(0,0,0) rotate(0deg); }
-  }
-  @keyframes floatSlow {
-    0% { transform: translateY(0) rotate(12deg); }
-    50% { transform: translateY(-10px) rotate(12deg); }
-    100% { transform: translateY(0) rotate(12deg); }
-  }
-  .animate-aurora { animation: auroraMove 12s ease-in-out infinite; }
-  .animate-aurora-slow { animation: auroraMove 18s ease-in-out infinite; }
-  .animate-float-slow { animation: floatSlow 8s ease-in-out infinite; }
-  @media (prefers-reduced-motion: reduce) {
-    .animate-aurora, .animate-aurora-slow, .animate-float-slow { animation: none; }
-  }
-</style>
+

@@ -67,16 +67,9 @@ const cardClasses = cn(
     <!-- 内容区域 -->
     <div class="relative z-10 h-full flex flex-col">
         <!-- 主标题 -->
-        <h3 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-500 font-heading leading-tight tracking-tight">
+        <h3 class="responsive-title font-bold text-gray-900 dark:text-white mb-4 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-500 font-heading leading-tight tracking-tight">
             {title}
         </h3>
-        
-        <!-- 描述 -->
-        {desc && (
-            <p class="text-gray-600 dark:text-gray-300 mb-6 line-clamp-3 text-base leading-relaxed flex-grow opacity-90 group-hover:opacity-100 transition-opacity duration-300">
-                {desc}
-            </p>
-        )}
         
         <!-- 底部信息区域 -->
         <div class="mt-auto space-y-4">
@@ -153,19 +146,88 @@ const cardClasses = cn(
         perspective: 1000px;
     }
 
-    /* 响应式调整 */
-    @media (max-width: 640px) {
+    /* 智能响应式标题 */
+    .responsive-title {
+        /* 基础字体大小 */
+        font-size: clamp(1.125rem, 4vw, 1.5rem);
+        line-height: 1.3;
+        
+        /* 单行显示，超出省略 */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        
+        /* 最小高度确保布局一致性 */
+        min-height: 1.8em;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* 容器查询支持 - 现代浏览器优化 */
+    @supports (container-type: inline-size) {
         .group {
-            padding: 1.5rem;
+            container-type: inline-size;
         }
         
-        h3 {
+        @container (max-width: 280px) {
+            .responsive-title {
+                font-size: 1rem;
+                line-height: 1.2;
+            }
+        }
+        
+        @container (min-width: 281px) and (max-width: 320px) {
+            .responsive-title {
+                font-size: 1.125rem;
+                line-height: 1.25;
+            }
+        }
+        
+        @container (min-width: 321px) and (max-width: 360px) {
+            .responsive-title {
+                font-size: 1.25rem;
+                line-height: 1.3;
+            }
+        }
+        
+        @container (min-width: 361px) {
+            .responsive-title {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+        }
+    }
+
+    /* 回退方案 - 基于视口宽度的响应式调整 */
+    @media (max-width: 480px) {
+        .group {
+            padding: 1.25rem;
+        }
+        
+        .responsive-title {
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+    }
+    
+    @media (min-width: 481px) and (max-width: 640px) {
+        .responsive-title {
             font-size: 1.125rem;
-            line-height: 1.4;
+            line-height: 1.25;
         }
-        
-        .line-clamp-3 {
-            -webkit-line-clamp: 2;
+    }
+    
+    @media (min-width: 641px) and (max-width: 768px) {
+        .responsive-title {
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+    }
+    
+    @media (min-width: 769px) {
+        .responsive-title {
+            font-size: 1.5rem;
+            line-height: 1.3;
         }
     }
 

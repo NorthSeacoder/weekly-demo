@@ -4,7 +4,18 @@ import StatCard from '~/components/ui/StatCard.astro'
 import Button from '~/components/ui/Button.astro'
 import { cn } from '~/utils/utils'
 
-const latestWeeklyList = await getLatestWeeklyPosts(12);
+let latestWeeklyList;
+try {
+    latestWeeklyList = await getLatestWeeklyPosts(12);
+    console.log('LatestWeeklyList Debug:', {
+        count: latestWeeklyList.length,
+        first: latestWeeklyList[0]?.title,
+        data: latestWeeklyList.slice(0, 3).map(w => ({ id: w.id, title: w.title, tags: w.tags }))
+    });
+} catch (error) {
+    console.error('Error loading weekly posts:', error);
+    latestWeeklyList = [];
+}
 ---
 
 <section class="py-20 lg:py-24 bg-gradient-to-br from-gray-50/60 via-white to-blue-50/40 dark:from-gray-900/80 dark:via-gray-900 dark:to-blue-950/40 relative overflow-hidden">
@@ -15,7 +26,7 @@ const latestWeeklyList = await getLatestWeeklyPosts(12);
         <div class="absolute bottom-40 right-20 w-32 h-32 bg-gradient-to-br from-purple-500/8 to-pink-500/8 rounded-full blur-3xl animate-pulse" style="animation-delay: 3s;"></div>
         <div class="absolute top-1/3 right-1/4 w-24 h-24 bg-gradient-to-br from-emerald-500/6 to-teal-500/6 rounded-full blur-2xl animate-pulse" style="animation-delay: 6s;"></div>
         
-        <!-- 网格背景 */
+        <!-- 网格背景 -->
         <div class="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(96,165,250,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.015)_1px,transparent_1px)] bg-[size:80px_80px] opacity-50"></div>
     </div>
 
@@ -43,27 +54,36 @@ const latestWeeklyList = await getLatestWeeklyPosts(12);
         </div>
 
         <!-- 卡片网格 -->
-        <div class={cn(
-            "grid gap-8 lg:gap-10",
-            "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
-            "mb-16 lg:mb-20 max-w-7xl mx-auto"
-        )}>
-            {latestWeeklyList.map((weekly, index) => (
-                <div 
-                    class="animate-fade-in-up group" 
-                    style={`animation-delay: ${index * 0.08}s;`}
-                    data-weekly-card
-                >
-                    <a href={`/weekly/${weekly.slug}`} class="block h-full focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-4 rounded-2xl">
-                        <StatCard
-                            title={weekly.title}
-                            date={weekly.date}
-                            tags={weekly.tags}
-                        />
-                    </a>
-                </div>
-            ))}
-        </div>
+        <!-- Debug: 数据长度 {latestWeeklyList.length} -->
+        {latestWeeklyList.length > 0 ? (
+            <div class={cn(
+                "grid gap-6 md:gap-8",
+                "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+                "2xl:grid-cols-4 auto-cols-fr",
+                "mb-16 lg:mb-20 max-w-8xl mx-auto weekly-grid"
+            )}>
+                {latestWeeklyList.map((weekly, index) => (
+                    <div 
+                        class="animate-fade-in-up group" 
+                        style={`animation-delay: ${index * 0.08}s;`}
+                        data-weekly-card
+                    >
+                        <a href={`/weekly/${weekly.slug}`} class="block h-full focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-4 rounded-2xl">
+                            <StatCard
+                                title={weekly.title}
+                                date={weekly.date}
+                                tags={weekly.tags}
+                                desc={weekly.content ? weekly.content.substring(0, 100) + '...' : undefined}
+                            />
+                        </a>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <div class="text-center py-12">
+                <p class="text-gray-500 dark:text-gray-400 text-lg">暂无周刊数据</p>
+            </div>
+        )}
 
         <!-- 查看更多按钮区域 -->
         <div class="text-center">
@@ -90,9 +110,6 @@ const latestWeeklyList = await getLatestWeeklyPosts(12);
                     class="relative px-8 py-4 text-lg font-semibold bg-white/90 dark:bg-gray-800/90 border border-gray-300/60 dark:border-gray-700/60 shadow-lg hover:shadow-xl backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-4"
                 >
                     <!-- 按钮图标 -->
-                    <svg class="w-5 h-5 mr-3 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                    </svg>
                     <span class="tracking-wide">查看全部周刊</span>
                     
                     <!-- 微光效果 -->
@@ -139,10 +156,17 @@ const latestWeeklyList = await getLatestWeeklyPosts(12);
         flex-direction: column;
     }
 
+    /* 智能响应式网格 */
+    .weekly-grid {
+        /* 使用 CSS Grid 的 auto-fit 和 minmax 来实现智能响应式 */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
     /* 响应式优化 */
-    @media (max-width: 768px) {
-        .grid {
-            gap: 2rem;
+    @media (max-width: 480px) {
+        .weekly-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
         
         h2 {
@@ -152,6 +176,48 @@ const latestWeeklyList = await getLatestWeeklyPosts(12);
         
         .text-xl {
             font-size: 1.125rem;
+        }
+    }
+
+    @media (min-width: 481px) and (max-width: 640px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @media (min-width: 641px) and (max-width: 768px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+    }
+
+    @media (min-width: 1025px) and (max-width: 1280px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+    }
+
+    @media (min-width: 1281px) and (max-width: 1536px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+        }
+    }
+
+    @media (min-width: 1537px) {
+        .weekly-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
         }
     }
 

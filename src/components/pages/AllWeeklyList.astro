@@ -64,9 +64,10 @@ const weeklyList = await getWeeklyPosts()
 
         <!-- 周刊网格 -->
         <div class={cn(
-            "grid gap-8 lg:gap-10",
-            "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
-            "max-w-8xl mx-auto mb-16"
+            "grid gap-6 md:gap-8",
+            "grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+            "2xl:grid-cols-4 auto-cols-fr",
+            "max-w-8xl mx-auto mb-16 weekly-grid"
         )}>
             {weeklyList.map((weekly, index) => (
                 <div 
@@ -149,11 +150,17 @@ const weeklyList = await getWeeklyPosts()
         flex-direction: column;
     }
 
-    /* 响应式优化 */
-    @media (max-width: 640px) {
-        .grid {
+    /* 智能响应式网格 */
+    .weekly-grid {
+        /* 使用 CSS Grid 的 auto-fit 和 minmax 来实现智能响应式 */
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    /* 针对不同屏幕尺寸的优化 */
+    @media (max-width: 480px) {
+        .weekly-grid {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
         }
         
         h1 {
@@ -166,21 +173,48 @@ const weeklyList = await getWeeklyPosts()
         }
     }
 
-    @media (min-width: 641px) and (max-width: 768px) {
-        .grid {
-            grid-template-columns: repeat(2, 1fr);
+    @media (min-width: 481px) and (max-width: 640px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
         }
     }
 
-    @media (min-width: 1536px) {
-        .grid {
+    @media (min-width: 641px) and (max-width: 768px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+    }
+
+    @media (min-width: 1025px) and (max-width: 1280px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+        }
+    }
+
+    @media (min-width: 1281px) and (max-width: 1536px) {
+        .weekly-grid {
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+        }
+    }
+
+    @media (min-width: 1537px) {
+        .weekly-grid {
             grid-template-columns: repeat(4, 1fr);
             gap: 2.5rem;
-        }
-        
-        .max-w-8xl {
-            max-width: 88rem;
+            max-width: 1600px;
         }
     }
 
